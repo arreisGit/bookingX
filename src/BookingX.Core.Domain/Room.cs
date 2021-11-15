@@ -1,12 +1,18 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using BookingX.Core.Domain.Exception;
 
 namespace BookingX.Core.Domain
 {
     public class Room
     {
-        public Guid Room { get; set; }
+        private readonly Guid _id;
+        public Guid Id
+        {
+            get => _id;
+            init
+            {
+                _id = value != Guid.Empty ? value : throw new InvalidEntityIdException(nameof(Id));
+            }
+        }
     }
 }
