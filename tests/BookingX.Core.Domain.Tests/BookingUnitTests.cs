@@ -1,5 +1,5 @@
-    using System;
-using BookingX.Core.Domain.Exception;
+using System;
+using BookingX.Core.Domain.Exceptions;
 using Xunit;
 
 namespace BookingX.Core.Domain.Tests

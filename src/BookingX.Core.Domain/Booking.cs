@@ -1,5 +1,5 @@
 using System;
-using BookingX.Core.Domain.Exception;
+using BookingX.Core.Domain.Exceptions;
 
 namespace BookingX.Core.Domain
 {

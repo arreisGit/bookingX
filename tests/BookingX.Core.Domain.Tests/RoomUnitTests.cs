@@ -1,5 +1,5 @@
 using System;
-using BookingX.Core.Domain.Exception;
+using BookingX.Core.Domain.Exceptions;
 using Xunit;
 
 namespace BookingX.Core.Domain.Tests
@@ -10,20 +10,18 @@ namespace BookingX.Core.Domain.Tests
         public void Given_EmptyGuid_Throws_InvalidEntityIdException()
         {
             // AAA
-            Assert.Throws<InvalidEntityIdException>(() => new Room{ Id = Guid.Empty });
+            Assert.Throws<InvalidEntityIdException>(() => new Room(Guid.Empty, "101"));
         }
 
-        [Fact]
-        public void Given_NonEmptyGuid_Id_Instance_Gets_Created()
+        [Theory]
+        [InlineData(null)]
+        [InlineData("")]
+        [InlineData("     ")]
+        public void Given_NullEmptyOrWhitespaced_RoomNumber_Throws_StringNullEmptyOrWhitespaceException(string roomNumber)
         {
-            // Arrange && Act
-            var falseBooking = new Room
-            {
-                Id = Guid.NewGuid()
-            };
-
-            // Act
-            Assert.NotNull(falseBooking);
+            // AAA
+            Assert.Throws<StringNullEmptyOrWhitespaceException>(() => new Room(Guid.NewGuid(), roomNumber));
         }
+
     }
 }

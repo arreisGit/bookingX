@@ -1,6 +1,6 @@
 using System;
 
-namespace BookingX.Core.Domain.Exception
+namespace BookingX.Core.Domain.Exceptions
 {
     public class InvalidEntityIdException : ArgumentException
     {
