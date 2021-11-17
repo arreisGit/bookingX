@@ -15,12 +15,11 @@ namespace BookingX.Core.Application.Handlers
         private readonly IRoomRepository _roomsRepository;
         private readonly IMapper _mapper;
 
-        public GetAllRoomsQueryHandler(IMapper mapper)
+        public GetAllRoomsQueryHandler(
+            IMapper mapper,
+            IRoomRepository roomsRepository)
         {
             _mapper = mapper;
-        }
-        public GetAllRoomsQueryHandler(IRoomRepository roomsRepository)
-        {
             _roomsRepository = roomsRepository;
         }
         public async Task<ICollection<RoomDto>> Handle(

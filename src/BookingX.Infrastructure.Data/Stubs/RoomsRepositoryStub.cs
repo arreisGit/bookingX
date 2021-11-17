@@ -18,7 +18,7 @@ namespace BookingX.Infrastructure.Data.Stubs
         } 
         public Task<ICollection<Room>> GetAllRooms()
         {
-            throw new NotImplementedException();
+            return Task.FromResult((ICollection<Room>)_fakeRooms);
         }
     }
 }
