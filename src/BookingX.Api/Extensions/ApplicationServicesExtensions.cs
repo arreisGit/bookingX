@@ -1,6 +1,7 @@
 using BookingX.Core.Application.Common;
 using BookingX.Core.Application.Handlers;
 using BookingX.Core.Domain.Interfaces;
+using BookingX.Infrastructure.Data.Dummies;
 using BookingX.Infrastructure.Data.Stubs;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
@@ -14,6 +15,7 @@ namespace BookingX.Api.Extensions
         {
         
             services.AddSingleton<IRoomRepository,RoomRepositoryStub>();
+            services.AddSingleton<IBookingRepository,BookingRepositoryDummy>();
             services.AddMediatR(typeof(GetAllRoomsQueryHandler).Assembly);
             services.AddAutoMapper(typeof(MappingProfiles).Assembly);
 

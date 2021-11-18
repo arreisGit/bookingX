@@ -8,16 +8,16 @@ namespace BookingX.Core.Domain
         private readonly Guid _id;
         private readonly Guid _customerId;
         private readonly Guid _roomId;
-        
-          public Guid Id
+
+        public Guid Id
         {
             get => _id;
             init
             {
                 _id = value != Guid.Empty ? value : throw new InvalidEntityIdException(nameof(Id));
             }
-        }   
-           public Guid CustomerId
+        }
+        public Guid CustomerId
         {
             get => _customerId;
             init
@@ -25,7 +25,7 @@ namespace BookingX.Core.Domain
                 _customerId = value != Guid.Empty ? value : throw new InvalidEntityIdException(nameof(CustomerId));
             }
         }
-         public Guid RoomId
+        public Guid RoomId
         {
             get => _roomId;
             init
@@ -33,7 +33,14 @@ namespace BookingX.Core.Domain
                 _roomId = value != Guid.Empty ? value : throw new InvalidEntityIdException(nameof(RoomId));
             }
         }
-        public DateTime StartDate {get; set;}
-        public DateTime EndDate {get; set;}
+
+        public DateTime CreatedUtc { get; } = DateTime.UtcNow;
+
+        // TODO: StartDate cannot be more than 30 days in advance
+        // TODO: StartDate must needs to start, at least next day after booking (creation)
+        public DateTime StartDate { get; set; }
+
+        // TODO: EndDate cannot be more than 3 days of difference than StartDate
+        public DateTime EndDate { get; set; }
     }
 }
