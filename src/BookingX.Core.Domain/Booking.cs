@@ -9,7 +9,8 @@ namespace BookingX.Core.Domain
         private readonly Guid _customerId;
         private readonly Guid _roomId;
 
-        public Guid Id
+        [JsonProperty("id")]
+        public string Id
         {
             get => _id;
             init
@@ -36,11 +37,12 @@ namespace BookingX.Core.Domain
 
         public DateTime CreatedUtc { get; } = DateTime.UtcNow;
 
-        // TODO: StartDate cannot be more than 30 days in advance
-        // TODO: StartDate must needs to start, at least next day after booking (creation)
+     
         public DateTime StartDate { get; set; }
 
-        // TODO: EndDate cannot be more than 3 days of difference than StartDate
         public DateTime EndDate { get; set; }
+
+        [JsonProperty(_etag)]
+        public Guid ETag {get; set;}
     }
 }

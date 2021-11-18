@@ -1,30 +1,36 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using BookingX.Core.Application.Commands;
 using BookingX.Core.Application.Dtos;
+using BookingX.Core.Application.Queries;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BookingX.Api.Controllers
 {
+    // TODO: Add Swagger example
     public class BookingsController : BaseApiController
     {
         public BookingsController(IMediator mediator) : base(mediator)
         {
         }
 
-        // TODO: Implement Create Booking
         [HttpGet("{id}")]
-        public Task<ActionResult<BookingDto>> GetBooking(Guid id)
+        public async Task<ActionResult<BookingDto>> GetBooking(Guid id)
         {
-            throw new NotImplementedException();
+            var booking = await _mediator.Send(new GetBookingQuery(id));
+            if(booking != null)
+            {
+                return Ok(booking);
+            }
+            else{
+                return NoContent();
+            };
         }
 
         // TODO: Add ModelBinding validation, passing any body gives default properties values.
-        // TODO: Add Swagger example
+       
         // Maybe FluentValidation?
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
@@ -36,9 +42,10 @@ namespace BookingX.Api.Controllers
             return CreatedAtAction(nameof(GetBooking), new {id = bookingDto.Id}, bookingDto);
         }
 
+        // TODO: Implement Etag to control concurrency
         // TODO: Implement Edit Booking
         [HttpPut("{id}")]
-        public Task<IActionResult> Edit(Guid id, BookingDto activity)
+        public Task<IActionResult> Update(Guid id, BookingDto activity)
         {
             throw new NotImplementedException();
         }

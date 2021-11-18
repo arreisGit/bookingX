@@ -16,6 +16,7 @@ namespace BookingX.Api
             CreateHostBuilder(args).Build().Run();
         }
 
+        // TODO: Implement logging
         public static IHostBuilder CreateHostBuilder(string[] args) =>
             Host.CreateDefaultBuilder(args)
                 .ConfigureWebHostDefaults(webBuilder =>

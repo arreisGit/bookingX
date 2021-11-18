@@ -34,6 +34,8 @@ namespace BookingX.Api
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "BookingX.Api", Version = "v1" });
             });
             services.AddApplicationServices();
+
+            // TODO: User Manage Secrets
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -50,6 +52,7 @@ namespace BookingX.Api
                 app.UseHsts();
             }
 
+            // TODO: Implement global exception handler.
             app.UseHttpsRedirection();
 
             app.UseRouting();
