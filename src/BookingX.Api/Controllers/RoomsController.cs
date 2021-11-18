@@ -13,7 +13,7 @@ namespace BookingX.Api.Controllers
         { }
 
         [HttpGet]
-        public async Task<ActionResult<ICollection<Room>>> GetAllRooms()
+        public async Task<ActionResult<ICollection<RoomDto>>> GetAllRooms()
         {
             var rooms = await _mediator.Send(new GetAllRoomsQuery());
             return Ok(rooms);

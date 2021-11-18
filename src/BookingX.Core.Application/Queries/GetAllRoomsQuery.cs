@@ -4,5 +4,5 @@ using MediatR;
 
 namespace BookingX.Core.Application.Queries
 {
-    public class GetAllRoomsQuery : IRequest<ICollection<Room>> { }
+    public class GetAllRoomsQuery : IRequest<ICollection<RoomDto>> { }
 }

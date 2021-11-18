@@ -2,8 +2,8 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Threading;
 using BookingX.Core.Application.Queries;
+using BookingX.Core.Application.Dtos;
 using BookingX.Core.Domain.Interfaces;
-using RoomDto = BookingX.Core.Application.Dtos.Room;
 using MediatR;
 using AutoMapper;
 
@@ -26,7 +26,7 @@ namespace BookingX.Core.Application.Handlers
             GetAllRoomsQuery request, CancellationToken cancellationToken)
         {
             var rooms = await _roomsRepository.GetAllRooms().ConfigureAwait(false);
-            var roomsDtos = _mapper.Map<ICollection<Domain.Room>, ICollection<Dtos.Room>>(rooms);
+            var roomsDtos = _mapper.Map<ICollection<Domain.Room>, ICollection<Dtos.RoomDto>>(rooms);
             return roomsDtos;
         }
     }

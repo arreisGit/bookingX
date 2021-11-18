@@ -13,7 +13,7 @@ namespace BookingX.Api.Extensions
             this IServiceCollection services)
         {
         
-            services.AddSingleton<IRoomRepository>(new RoomRepositoryStub());
+            services.AddSingleton<IRoomRepository,RoomRepositoryStub>();
             services.AddMediatR(typeof(GetAllRoomsQueryHandler).Assembly);
             services.AddAutoMapper(typeof(MappingProfiles).Assembly);
 
