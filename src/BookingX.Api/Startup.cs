@@ -43,7 +43,6 @@ namespace BookingX.Api
                 app.UseHsts();
             }
 
-            // TODO: Implement global exception handler.
             app.UseHttpsRedirection();
 
             app.UseRouting();

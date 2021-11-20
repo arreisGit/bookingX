@@ -24,11 +24,8 @@ namespace BookingX.Api.Extensions
             services.AddRepositories();
             services.AddMediatR(typeof(GetAllRoomsQueryHandler).Assembly);
 
-            //TODO: Add it by configuration and assert it is valid on launch.
+            //TODO: Validate automapper config
             services.AddAutoMapper(typeof(MappingProfiles).Assembly);
-
-
-            // TODO: App insights for logging and telemetry.
 
             return services;
         }

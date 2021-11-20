@@ -4,6 +4,10 @@ using Microsoft.Extensions.Hosting;
 namespace BookingX.Api
 {
     // TODO: Add documentation comments
+    // TODO: Get rid of CQRS, is not useful for this simple case.
+    // TODO: Implement global exception handler.
+    // TODO: App insights for logging and telemetry.
+    // TODO: Implement logging
     public class Program
     {
         public static void Main(string[] args)
@@ -11,7 +15,7 @@ namespace BookingX.Api
             CreateHostBuilder(args).Build().Run();
         }
 
-        // TODO: Implement logging
+       
         public static IHostBuilder CreateHostBuilder(string[] args) =>
             Host.CreateDefaultBuilder(args)
                 .ConfigureWebHostDefaults(webBuilder =>

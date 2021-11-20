@@ -13,10 +13,10 @@ namespace BookingX.Core.Application.Handlers
         {
             _bookingRepository = bookingRepository;
         }
-        
+
         public async Task<bool> Handle(DeleteBookingCommand request, CancellationToken cancellationToken)
         {
-            return  await _bookingRepository.DeleteAsync(request.Id);
+            return await _bookingRepository.DeleteAsync(request.Id);
         }
     }
 }
