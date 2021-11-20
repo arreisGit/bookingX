@@ -7,12 +7,17 @@ namespace BookingX.Infrastructure.Data.Dummies
 {
     public class BookingRepositoryDummy : IBookingRepository
     {
-        public Task<Booking> CreateBooking(Booking booking)
+        public Task<Booking> CreateAsync(Booking booking)
         {
             return Task.FromResult(booking);
         }
 
-        public Task<Booking> GetById(Guid id)
+        public Task<bool> DeleteAsync(Guid id)
+        {
+            return Task.FromResult(true);
+        }
+
+        public Task<Booking> GetByIdAsync(Guid id)
         {
             var fakeBooking = new Booking
             {

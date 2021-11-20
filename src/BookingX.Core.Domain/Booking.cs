@@ -5,7 +5,7 @@ using Newtonsoft.Json;
 namespace BookingX.Core.Domain
 {
     // TODO: Remove Newtonsoft Attributes.
-    // POCOS should remain as independent as possible.
+    // -- POCOS should remain as independent as possible.
     public class Booking
     {
         private readonly Guid _id;

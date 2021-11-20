@@ -12,10 +12,11 @@ namespace BookingX.Infrastructure.Data
     // TODO: Set a proper CosmosDb partition key and make use of it.
     // In real time scenarios, one would want to make use of a partition key
     // that spreads the records as eavenly possible.
+    // TODO: Implement Base Repository for reusability
     public class BookingRepository : IBookingRepository
     {
         private readonly Container _container;
-        
+
         private BookingRepository(
             Container container
         )
@@ -30,8 +31,8 @@ namespace BookingX.Infrastructure.Data
             if (cosmosClient is null)
                 throw new ArgumentNullException(nameof(cosmosClient));
 
-            if(bookingContainerSettings?.Value is null)
-                 throw new ArgumentNullException(nameof(bookingContainerSettings));
+            if (bookingContainerSettings?.Value is null)
+                throw new ArgumentNullException(nameof(bookingContainerSettings));
 
             var settings = bookingContainerSettings.Value;
 
@@ -66,7 +67,7 @@ namespace BookingX.Infrastructure.Data
             return containerResponse.Container;
         }
 
-        public async Task<Booking> GetById(Guid id)
+        public async Task<Booking> GetByIdAsync(Guid id)
         {
             try
             {
@@ -84,14 +85,47 @@ namespace BookingX.Infrastructure.Data
         }
 
         // TODO Use an stored procedure to avoid concurrent overlapping reservations.
-        public async Task<Booking> CreateBooking(Booking booking)
+        public async Task<Booking> CreateAsync(Booking booking)
         {
             ItemResponse<Booking> response = await _container.CreateItemAsync<Booking>(
-                                                                booking, 
+                                                                booking,
                                                                 new PartitionKey(booking.Id.ToString()))
                                                               .ConfigureAwait(false);
             return response;
         }
 
+        public async Task<bool> Modify(Booking booking)
+        {
+            try
+            {
+                ItemResponse<Booking> response = await _container
+                                                .UpsertItemAsync<Booking>(
+                                                    booking,
+                                                    new PartitionKey(booking.Id.ToString())
+                                                ).ConfigureAwait(false);
+                return true;
+            }
+            catch (CosmosException ex) when (ex.StatusCode == System.Net.HttpStatusCode.NotFound || ex.StatusCode == System.Net.HttpStatusCode.PreconditionFailed)
+            {
+                return false;
+            }
+        }
+
+        public async Task<bool> DeleteAsync(Guid id)
+        {
+            try
+            {
+                ItemResponse<Booking> response = await _container
+                                                        .DeleteItemAsync<Booking>(
+                                                            id.ToString()
+                                                            , new PartitionKey(id.ToString())
+                                                        ).ConfigureAwait(false);
+                return true;
+            }
+            catch (CosmosException ex) when (ex.StatusCode == System.Net.HttpStatusCode.NotFound)
+            {
+                return false;
+            }
+        }
     }
 }

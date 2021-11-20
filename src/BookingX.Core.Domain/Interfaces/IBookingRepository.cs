@@ -5,7 +5,8 @@ namespace BookingX.Core.Domain.Interfaces
 {
     public interface IBookingRepository
     {
-        Task<Booking> CreateBooking(Booking booking);
-        Task<Booking> GetById(Guid id);
+        Task<Booking> CreateAsync(Booking booking);
+        Task<Booking> GetByIdAsync(Guid id);
+        Task<bool> DeleteAsync(Guid id);
     }
 }

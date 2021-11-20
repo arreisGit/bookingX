@@ -9,7 +9,8 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace BookingX.Api.Controllers
 {
-    // TODO: Add Swagger example
+    // TODO: Add custom Swagger examples
+    // TODO: Add Validations. Use fluent validation pipeline with Mediatr
     public class BookingsController : BaseApiController
     {
         public BookingsController(IMediator mediator) : base(mediator)
@@ -20,16 +21,17 @@ namespace BookingX.Api.Controllers
         public async Task<ActionResult<BookingDto>> GetBooking(Guid id)
         {
             var booking = await _mediator.Send(new GetBookingQuery(id));
-            if(booking != null)
+            if (booking != null)
             {
                 return Ok(booking);
             }
-            else{
-                return NoContent();
+            else
+            {
+                return NotFound();
             };
         }
 
-        // TODO: Add Validations. Use fluent validation pipeline with Mediatr
+
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -37,22 +39,26 @@ namespace BookingX.Api.Controllers
         {
             var createBookingCommand = new CreateBookingCommand(bookingDto);
             await _mediator.Send(createBookingCommand);
-            return CreatedAtAction(nameof(GetBooking), new {id = bookingDto.Id}, bookingDto);
+            return CreatedAtAction(nameof(GetBooking), new { id = bookingDto.Id }, bookingDto);
         }
-
 
         // TODO: Implement Edit Booking
         [HttpPut("{id}")]
         public Task<IActionResult> Update(Guid id, BookingDto activity)
         {
+            //BadReqiest. Accepted or NOContent
+    
+
             throw new NotImplementedException();
+
         }
 
-        // TODO: Implement Delete Booking
         [HttpDelete("{id}")]
-        public Task<IActionResult> Delete(Guid id)
+        public async Task<IActionResult> Delete(Guid id)
         {
-            throw new NotImplementedException();
+            var deleteCommand = new DeleteBookingCommand(id);
+            var deleted = await _mediator.Send(deleteCommand);
+            return deleted ? Accepted() : NotFound();
         }
     }
 }
