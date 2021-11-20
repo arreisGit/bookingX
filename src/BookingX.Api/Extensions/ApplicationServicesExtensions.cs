@@ -1,8 +1,10 @@
 using BookingX.Core.Application.Common;
 using BookingX.Core.Application.Handlers;
+using BookingX.Core.Application.Interfaces;
+using BookingX.Core.Application.Strategies;
 using BookingX.Core.Domain.Interfaces;
+
 using BookingX.Infrastructure.Data;
-using BookingX.Infrastructure.Data.Dummies;
 using BookingX.Infrastructure.Data.Settings;
 using BookingX.Infrastructure.Data.Stubs;
 using MediatR;
@@ -50,14 +52,17 @@ namespace BookingX.Api.Extensions
                     connectionSettings.Endpoint,
                     connectionSettings.AuthenticationKey);
             });
-
+            
             return services;
         }
 
         private static IServiceCollection AddRepositories(
            this IServiceCollection services)
         {
+
+            // Using a Rooms stub to save time with the demostration project.
             services.AddSingleton<IRoomRepository, RoomRepositoryStub>();
+
             services.AddSingleton<IBookingRepository>( 
                 sp =>  {
                      return BookingRepository
