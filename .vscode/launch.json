@@ -5,14 +5,14 @@
             // Use IntelliSense to find out which attributes exist for C# debugging
             // Use hover for the description of the existing attributes
             // For further information visit https://github.com/OmniSharp/omnisharp-vscode/blob/master/debugger-launchjson.md
-            "name": "BookingX API)",
+            "name": "BookingX API",
             "type": "coreclr",
             "request": "launch",
             "preLaunchTask": "build",
             // If you have changed target frameworks, make sure to update the program path.
-            "program": "${workspaceFolder}/src/Booking.Api/bin/Debug/net5.0/Booking.Api.dll",
+            "program": "${workspaceFolder}/src/BookingX.Api/bin/Debug/net5.0/BookingX.Api.dll",
             "args": [],
-            "cwd": "${workspaceFolder}/src/Booking.Api",
+            "cwd": "${workspaceFolder}/src/BookingX.Api",
             "stopAtEntry": false,
             // Enable launching a web browser when ASP.NET Core starts. For more information: https://aka.ms/VSCode-CS-LaunchJson-WebBrowser
             "serverReadyAction": {
