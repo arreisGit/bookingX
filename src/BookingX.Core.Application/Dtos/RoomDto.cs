@@ -6,7 +6,6 @@ namespace BookingX.Core.Application.Dtos
 {
     public class RoomDto
     {
-        [Required]
         [JsonProperty(PropertyName="id")]
         public Guid Id { get; set; }
         
