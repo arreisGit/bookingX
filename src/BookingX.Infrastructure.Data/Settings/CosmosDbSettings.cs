@@ -1,9 +1,9 @@
 namespace BookingX.Infrastructure.Data.Settings
 {
-    public class CosmosDbSettings
+    public class CosmosDbConnectionSettings
     {
+        public const string Section = "CosmosDb:Connection";
         public string Endpoint { get; set; }
-        public string AuthKey { get; set; }
-        public BookingContainerSettings BookingSettings  { get; set; }
+        public string AuthenticationKey { get; set; }
     }
 }

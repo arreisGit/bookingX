@@ -29,9 +29,7 @@ namespace BookingX.Api.Controllers
             };
         }
 
-        // TODO: Add ModelBinding validation, passing any body gives default properties values.
-       
-        // Maybe FluentValidation?
+        // TODO: Add Validations. Use fluent validation pipeline with Mediatr
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -42,7 +40,7 @@ namespace BookingX.Api.Controllers
             return CreatedAtAction(nameof(GetBooking), new {id = bookingDto.Id}, bookingDto);
         }
 
-        // TODO: Implement Etag to control concurrency
+
         // TODO: Implement Edit Booking
         [HttpPut("{id}")]
         public Task<IActionResult> Update(Guid id, BookingDto activity)

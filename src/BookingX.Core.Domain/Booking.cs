@@ -1,8 +1,11 @@
 using System;
 using BookingX.Core.Domain.Exceptions;
+using Newtonsoft.Json;
 
 namespace BookingX.Core.Domain
 {
+    // TODO: Remove Newtonsoft Attributes.
+    // POCOS should remain as independent as possible.
     public class Booking
     {
         private readonly Guid _id;
@@ -10,7 +13,7 @@ namespace BookingX.Core.Domain
         private readonly Guid _roomId;
 
         [JsonProperty("id")]
-        public string Id
+        public Guid Id
         {
             get => _id;
             init
@@ -42,7 +45,7 @@ namespace BookingX.Core.Domain
 
         public DateTime EndDate { get; set; }
 
-        [JsonProperty(_etag)]
-        public Guid ETag {get; set;}
+        [JsonProperty("_etag")]
+        public string ETag {get; set;}
     }
 }

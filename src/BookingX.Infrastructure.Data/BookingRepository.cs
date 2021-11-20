@@ -4,9 +4,10 @@ using BookingX.Core.Domain;
 using BookingX.Core.Domain.Interfaces;
 using BookingX.Infrastructure.Data.Settings;
 using Microsoft.Azure.Cosmos;
+using Microsoft.Extensions.Options;
+
 namespace BookingX.Infrastructure.Data
 {
-
     // TODO: Use Etag for optimistic cocurrency control
     // TODO: Set a proper CosmosDb partition key and make use of it.
     // In real time scenarios, one would want to make use of a partition key
@@ -14,9 +15,7 @@ namespace BookingX.Infrastructure.Data
     public class BookingRepository : IBookingRepository
     {
         private readonly Container _container;
-        private readonly string _databaseName;
-        private readonly string _containerName;
-        private readonly string _partitionKey;
+        
         private BookingRepository(
             Container container
         )
@@ -26,18 +25,22 @@ namespace BookingX.Infrastructure.Data
 
         public static async Task<BookingRepository> Create(
             CosmosClient cosmosClient,
-            BookingContainerSettings bookingContainerSettings)
+            IOptions<BookingContainerSettings> bookingContainerSettings)
         {
             if (cosmosClient is null)
                 throw new ArgumentNullException(nameof(cosmosClient));
 
-            Database database = await GetOrCreateDatabase(
-                                        cosmosClient, bookingContainerSettings.Database);
+            if(bookingContainerSettings?.Value is null)
+                 throw new ArgumentNullException(nameof(bookingContainerSettings));
+
+            var settings = bookingContainerSettings.Value;
+
+            Database database = await GetOrCreateDatabase(cosmosClient, settings.Database);
 
             var container = await GetOrCreateContainer(
                                 database,
-                                bookingContainerSettings.Container,
-                                bookingContainerSettings.PartitionKey);
+                                settings.Container,
+                                settings.PartitionKey);
 
             return new BookingRepository(container);
         }
@@ -63,7 +66,6 @@ namespace BookingX.Infrastructure.Data
             return containerResponse.Container;
         }
 
-  
         public async Task<Booking> GetById(Guid id)
         {
             try
@@ -86,8 +88,7 @@ namespace BookingX.Infrastructure.Data
         {
             ItemResponse<Booking> response = await _container.CreateItemAsync<Booking>(
                                                                 booking, 
-                                                                new PartitionKey(booking.Id.ToString()),
-                                                                new RequestOptions{})
+                                                                new PartitionKey(booking.Id.ToString()))
                                                               .ConfigureAwait(false);
             return response;
         }

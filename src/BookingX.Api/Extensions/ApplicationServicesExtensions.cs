@@ -1,12 +1,15 @@
 using BookingX.Core.Application.Common;
 using BookingX.Core.Application.Handlers;
 using BookingX.Core.Domain.Interfaces;
+using BookingX.Infrastructure.Data;
 using BookingX.Infrastructure.Data.Dummies;
 using BookingX.Infrastructure.Data.Settings;
 using BookingX.Infrastructure.Data.Stubs;
 using MediatR;
+using Microsoft.Azure.Cosmos;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
 
 namespace BookingX.Api.Extensions
 {
@@ -16,15 +19,58 @@ namespace BookingX.Api.Extensions
             this IServiceCollection services,
             IConfiguration configuration)
         {
-        
-            services.AddSingleton<IRoomRepository,RoomRepositoryStub>();
-            services.AddSingleton<IBookingRepository,BookingRepositoryDummy>();
+
+            services.AddCosmosDbClient(configuration);
+            services.AddRepositories();
             services.AddMediatR(typeof(GetAllRoomsQueryHandler).Assembly);
+
+            //TODO: Add it by configuration and assert it is valid on launch.
             services.AddAutoMapper(typeof(MappingProfiles).Assembly);
 
-            // TODO: App insights.
-            CosmosDbSettings cosmosDbSettings = configuration.GetValue<CosmosDbSettings>("ApplicationSettings:InstrumentationKey");
 
+            // TODO: App insights for logging and telemetry.
+
+            return services;
+        }
+
+        private static IServiceCollection AddCosmosDbClient(
+           this IServiceCollection services,
+           IConfiguration configuration)
+        {
+
+            var connectionSettings = new CosmosDbConnectionSettings();
+
+            configuration
+            .GetSection(CosmosDbConnectionSettings.Section)
+            .Bind(connectionSettings);
+
+            var bookingSettingsSection = configuration.GetSection(BookingContainerSettings.Section);
+            services.Configure<BookingContainerSettings>(bookingSettingsSection);
+
+            services.AddSingleton<CosmosClient>(sp =>
+            {
+                return new CosmosClient(
+                    connectionSettings.Endpoint,
+                    connectionSettings.AuthenticationKey);
+            });
+
+            return services;
+        }
+
+        private static IServiceCollection AddRepositories(
+           this IServiceCollection services)
+        {
+            services.AddSingleton<IRoomRepository, RoomRepositoryStub>();
+            services.AddSingleton<IBookingRepository>( 
+                sp =>  {
+                     return BookingRepository
+                            .Create(
+                                sp.GetRequiredService<CosmosClient>(),
+                                sp.GetRequiredService<IOptions<BookingContainerSettings>>()
+                            )
+                            .GetAwaiter()
+                            .GetResult();
+                });
             return services;
         }
     }
