@@ -1,0 +1,139 @@
+{
+	"info": {
+		"_postman_id": "de47adc8-2889-427e-9b13-f7c8853f8bbf",
+		"name": "BookingX",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Bookings",
+			"item": [
+				{
+					"name": "Get",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/api/bookings/:id",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"bookings",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "5d59537b-f9d8-4bc0-a8a7-e50b199213ce"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"id\": \"5d59537b-f9d8-4bc0-a8a7-e50b199213ce\",\r\n  \"customerId\": \"980fbb8f-2311-45b9-9ded-e6371908453a\",\r\n  \"roomId\": \"8f414952-b2d8-4193-b956-56b33698c7f2\",\r\n  \"startDate\": \"2021-11-20\",\r\n  \"endDate\": \"2021-11-20\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/api/bookings",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"bookings"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\": \"5d59537b-f9d8-4bc0-a8a7-e50b199213ce\",\r\n    \"customerId\": \"980fbb8f-2311-45b9-9ded-e6371908453a\",\r\n    \"roomId\": \"8f414952-b2d8-4193-b956-56b33698c7f2\",\r\n   \"startDate\": \"2021-11-22\",\r\n    \"endDate\": \"2021-11-25\",\r\n    \"etag\": \"\\\"00000000-0000-0000-ddd1-1764366001d7\\\"\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/api/bookings/:id",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"bookings",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "5d59537b-f9d8-4bc0-a8a7-e50b199213ce"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/api/bookings/:id",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"bookings",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "5d59537b-f9d8-4bc0-a8a7-e50b199213ce"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Rooms",
+			"item": [
+				{
+					"name": "Rooms",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": null
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
