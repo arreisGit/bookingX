@@ -94,7 +94,7 @@ namespace BookingX.Infrastructure.Data
             return response;
         }
 
-        public async Task<bool> Modify(Booking booking)
+        public async Task<bool> UpdateAsync(Booking booking)
         {
             try
             {

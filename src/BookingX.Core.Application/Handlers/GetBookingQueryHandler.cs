@@ -10,8 +10,6 @@ using MediatR;
 
 namespace BookingX.Core.Application.Handlers
 {
-    // TODO: We could implement a base class with the Template Pattern to get a nice 
-    // forced validation implementation.
     public class GetBookingQueryHandler : IRequestHandler<GetBookingQuery, BookingDto>
     {
         private readonly IMapper _mapper;
@@ -27,7 +25,7 @@ namespace BookingX.Core.Application.Handlers
             if(request ==  null)
                 throw new ArgumentNullException(nameof(request));
 
-            Booking booking = await _bookingRepository.GetById(request.Id);
+            Booking booking = await _bookingRepository.GetByIdAsync(request.Id);
             BookingDto bookingDto = _mapper.Map<BookingDto>(booking);
 
             return bookingDto;

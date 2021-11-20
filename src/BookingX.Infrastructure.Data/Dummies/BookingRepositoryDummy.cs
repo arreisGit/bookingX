@@ -17,6 +17,11 @@ namespace BookingX.Infrastructure.Data.Dummies
             return Task.FromResult(true);
         }
 
+        public Task<bool> UpdateAsync(Booking booking)
+        {
+            return Task.FromResult(true);
+        }
+
         public Task<Booking> GetByIdAsync(Guid id)
         {
             var fakeBooking = new Booking

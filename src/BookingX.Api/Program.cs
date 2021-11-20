@@ -3,6 +3,7 @@ using Microsoft.Extensions.Hosting;
 
 namespace BookingX.Api
 {
+    // TODO: Add UseCases unit tests
     // TODO: Add documentation comments
     // TODO: Get rid of CQRS, is not useful for this simple case.
     // TODO: Implement global exception handler.

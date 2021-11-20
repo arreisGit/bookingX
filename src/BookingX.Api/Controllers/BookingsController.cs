@@ -31,7 +31,6 @@ namespace BookingX.Api.Controllers
             };
         }
 
-
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -42,22 +41,20 @@ namespace BookingX.Api.Controllers
             return CreatedAtAction(nameof(GetBooking), new { id = bookingDto.Id }, bookingDto);
         }
 
-        // TODO: Implement Edit Booking
         [HttpPut("{id}")]
-        public Task<IActionResult> Update(Guid id, BookingDto activity)
+        public async Task<IActionResult> Update(Guid id, BookingDto booking)
         {
-            //BadReqiest. Accepted or NOContent
-    
-
-            throw new NotImplementedException();
-
+            booking.Id = id.ToString();
+            var updateBookingCommand = new UpdateBookingCommand(booking);
+            var updated = await _mediator.Send(updateBookingCommand);
+            return updated ? Accepted() : NotFound();
         }
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(Guid id)
         {
-            var deleteCommand = new DeleteBookingCommand(id);
-            var deleted = await _mediator.Send(deleteCommand);
+            var deleteBookingCommand = new DeleteBookingCommand(id);
+            var deleted = await _mediator.Send(deleteBookingCommand);
             return deleted ? Accepted() : NotFound();
         }
     }

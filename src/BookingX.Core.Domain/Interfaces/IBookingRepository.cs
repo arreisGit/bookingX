@@ -7,6 +7,8 @@ namespace BookingX.Core.Domain.Interfaces
     {
         Task<Booking> CreateAsync(Booking booking);
         Task<Booking> GetByIdAsync(Guid id);
+        Task<bool> UpdateAsync(Booking booking);
         Task<bool> DeleteAsync(Guid id);
+
     }
 }

@@ -28,7 +28,7 @@ namespace BookingX.Core.Application.Handlers
         public async Task<Unit> Handle(CreateBookingCommand request, CancellationToken cancellationToken)
         {
             var booking = _mapper.Map<Booking>(request.BookingDto);
-            await _bookingRepository.CreateBooking(booking);
+            await _bookingRepository.CreateAsync(booking);
             return Unit.Value;
         }
     }
