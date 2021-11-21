@@ -1,4 +1,3 @@
-using System;
 using System.ComponentModel.DataAnnotations;
 
 namespace BookingX.Core.Application.Dtos
@@ -14,8 +13,7 @@ namespace BookingX.Core.Application.Dtos
         [Required]
         public string RoomId { get; set; }
 
-
-        //TODO: Decide to go with string or DateTime
+        [Required]
         [DataType(DataType.DateTime)]
         public string StartDate { get; set; }
 
