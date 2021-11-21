@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using BookingX.Core.Domain;
 using BookingX.Core.Domain.Exceptions;
+using BookingX.Core.Domain.Extensions;
 using BookingX.Core.Domain.Interfaces;
 using BookingX.Core.Domain.ValueObjects;
 using BookingX.Infrastructure.Data.Settings;
@@ -22,7 +23,6 @@ namespace BookingX.Infrastructure.Data
     public class BookingRepository : IBookingRepository
     {
         private readonly Container _container;
-        private static string DateTimeToShortStringFormat = "yyyy-MM-dd";
 
         private BookingRepository(
             Container container
@@ -127,7 +127,7 @@ namespace BookingX.Infrastructure.Data
 
             if (roomOverlappingBookings.Any())
                 throw new ValidationException(
-                    "The booking cannot be created because one already exists on the same dates.");
+                    "There room is not available to be booked in the specified dates");
 
             ItemResponse<Booking> response = await _container.CreateItemAsync<Booking>(
                                                                 booking,
@@ -215,14 +215,15 @@ namespace BookingX.Infrastructure.Data
         /// <returns>SQL API query.</returns>
         private static string GetBookingsBetweenDatesQuery(DateRange dateRange, Guid? roomId = null)
         {
-            string fromDate = dateRange.From.ToString(DateTimeToShortStringFormat);
-            string toDate = dateRange.To.ToString(DateTimeToShortStringFormat);
+            string fromDate = dateRange.From.ToStandarizedString();
+            string toDate = dateRange.To.ToStandarizedString();
 
             var query = new StringBuilder();
             query.Append("SELECT * FROM b ");
             query.Append("WHERE ");
             query.Append($"((b.StartDate BETWEEN '{fromDate}' AND '{toDate}')");
-            query.Append($" OR (b.EndDate BETWEEN '{fromDate}' AND '{toDate}'))");
+            query.Append($" OR (b.EndDate BETWEEN '{fromDate}' AND '{toDate}')");
+            query.Append($" OR (b.StartDate < '{fromDate}' AND b.EndDate > '{toDate}'))");
 
             if (roomId != null)
                 query.Append($" AND b.RoomId = '{roomId}'");

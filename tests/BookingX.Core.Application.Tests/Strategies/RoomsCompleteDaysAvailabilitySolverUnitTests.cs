@@ -138,10 +138,10 @@ namespace BookingX.Core.Application.Tests.Strategies
                 fakeBookingEndDate.AddDays(1),
                 fakeRoomAvailableDateRange.From
             );
-             Assert.Equal(
-                queryToDate.AddDays(1).AddMilliseconds(-1),
-                fakeRoomAvailableDateRange.To
-            );
+            Assert.Equal(
+               queryToDate.AddDays(1).AddMilliseconds(-1),
+               fakeRoomAvailableDateRange.To
+           );
         }
 
         [Fact]
@@ -215,6 +215,45 @@ namespace BookingX.Core.Application.Tests.Strategies
                item => Assert.Equal(firstExpectedAvailableDateRange, item),
                item => Assert.Equal(secondExpectedAvailableDateRange, item)
             );
+        }
+
+        [Fact]
+        public void Solve_Given_Existent_Englobing_Booking_Does_Not_Return_Availability()
+        {
+            // Arrange 
+            DateTime queryFromDate = new DateTime(2021, 06, 05);
+            DateTime queryToDate = new DateTime(2021, 06, 07, 23, 59, 59);
+            var dateRange = new DateRange(queryFromDate, queryToDate);
+            var fakeRoom = new Room(Guid.NewGuid(), "test");
+
+            DateTime existentBookingStartDate = new DateTime(2021, 06, 01);
+            DateTime existentBookingEndDate = new DateTime(2021, 06, 10);
+
+            var fakeBookings = new Booking[]{
+                new Booking() {
+                    Id = Guid.NewGuid(),
+                    RoomId = fakeRoom.Id,
+                    CustomerId = Guid.NewGuid(),
+                    StartDate = existentBookingStartDate,
+                    EndDate = existentBookingEndDate
+                }
+            };
+
+            var rooms = new Room[] { fakeRoom };
+
+            var availabilitySolver = new RoomsCompleteDaysAvailabilitySolver();
+
+            // Act
+            var roomsAvailability = availabilitySolver.Solve(
+                dateRange,
+                rooms,
+                fakeBookings
+            );
+
+            // Assert
+            Assert.NotEmpty(roomsAvailability);
+            var fakeRoomAvailability = roomsAvailability.First();
+            Assert.Empty(fakeRoomAvailability.AvailableDateRanges);
         }
     }
 }

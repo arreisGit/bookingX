@@ -55,8 +55,9 @@ namespace BookingX.Core.Application.Strategies
                     {
                         return b.RoomId.Equals(room.Id)
                             && (
-                                (b.StartDate.Date >= dateRange.From.Date && b.StartDate.Date <= dateRange.To.Date)
-                             || (b.EndDate.Date >= dateRange.From.Date && b.EndDate.Date <= dateRange.To.Date)
+                                (b.StartDate >= dateRange.From && b.StartDate <= dateRange.To)
+                             || (b.EndDate >= dateRange.From && b.EndDate <= dateRange.To)
+                             || (b.StartDate < dateRange.From && b.EndDate > dateRange.To)
                             );
                     })
                     .OrderBy(b => b.StartDate);

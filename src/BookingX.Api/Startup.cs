@@ -1,4 +1,5 @@
 using BookingX.Api.Extensions;
+using BookingX.Api.Middleware;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -42,6 +43,8 @@ namespace BookingX.Api
             else {
                 app.UseHsts();
             }
+
+            app.UseMiddleware<ErrorHandlerMiddleware>();
 
             app.UseHttpsRedirection();
 

@@ -3,7 +3,6 @@ using BookingX.Core.Application.Handlers;
 using BookingX.Core.Application.Interfaces;
 using BookingX.Core.Application.Strategies;
 using BookingX.Core.Domain.Interfaces;
-
 using BookingX.Infrastructure.Data;
 using BookingX.Infrastructure.Data.Settings;
 using BookingX.Infrastructure.Data.Stubs;
