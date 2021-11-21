@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using BookingX.Core.Domain;
+using BookingX.Core.Domain.Exceptions;
 using BookingX.Core.Domain.Interfaces;
 using BookingX.Core.Domain.ValueObjects;
 using BookingX.Infrastructure.Data.Settings;
@@ -93,11 +94,7 @@ namespace BookingX.Infrastructure.Data
             return containerResponse.Container;
         }
 
-        /// <summary>
-        /// Gets the Booking by Id
-        /// </summary>
-        /// <param name="id">The Booking Id</param>
-        /// <returns>Booking</returns>
+        /// <inheritdoc/>
         public async Task<Booking> GetByIdAsync(Guid id)
         {
             try
@@ -116,13 +113,22 @@ namespace BookingX.Infrastructure.Data
         }
 
         // TODO Use an stored procedure to avoid concurrent overlapping reservations
-        /// <summary>
-        /// Creates a Booking
-        /// </summary>
-        /// <param name="booking">The Booking to be created</param>
-        /// <returns>The resulting Booking</returns>
+        /// <inheritdoc/>
         public async Task<Booking> CreateAsync(Booking booking)
         {
+            // This is a shortcut. In real-life scenarios the usage of an stored procedure
+            // would be faster and safer due the posibility to control both the transaction
+            // and locking. 
+            var roomOverlappingBookings = await GetBookingsInDateRange(
+                                        new DateRange(
+                                            booking.StartDate.Date,
+                                            booking.EndDate.Date),
+                                        booking.RoomId);
+
+            if (roomOverlappingBookings.Any())
+                throw new ValidationException(
+                    "The booking cannot be created because one already exists on the same dates.");
+
             ItemResponse<Booking> response = await _container.CreateItemAsync<Booking>(
                                                                 booking,
                                                                 new PartitionKey(booking.Id.ToString()))
@@ -130,11 +136,7 @@ namespace BookingX.Infrastructure.Data
             return response;
         }
 
-        /// <summary>
-        /// Updates a booking
-        /// </summary>
-        /// <param name="booking">The Booking to be updated</param>
-        /// <returns>True if the update process succeded, false otherwhise.</returns>
+        /// <inheritdoc/>
         public async Task<bool> UpdateAsync(Booking booking)
         {
             try
@@ -152,11 +154,7 @@ namespace BookingX.Infrastructure.Data
             }
         }
 
-        /// <summary>
-        /// Deletes a booking.
-        /// </summary>
-        /// <param name="id">The Id that corresponds to the booking to be deleted.</param>
-        /// <returns>True if the deletion succeded, false otherwhise.</returns>
+        /// <inheritdoc/>
         public async Task<bool> DeleteAsync(Guid id)
         {
             try
@@ -174,14 +172,27 @@ namespace BookingX.Infrastructure.Data
             }
         }
 
+        /// <inheritdoc/>
+        public Task<IEnumerable<Booking>> GetAllBookingsInDateRange(DateRange dateRange)
+        {
+            return GetBookingsInDateRange(dateRange);
+        }
+
+        /// <inheritdoc/>
+        public Task<IEnumerable<Booking>> GetRoomBookingsInDateRange(Guid roomId, DateRange dateRange)
+        {
+            return GetBookingsInDateRange(dateRange, roomId);
+        }
+
         /// <summary>
-        /// Searches for all existent bookings between a date range and returns them
+        /// Returns all existent bookings between a date range.
         /// </summary>
         /// <param name="dateRange">The date range that will be used to look for bookings</param>
-        /// <returns>A collection of all the bookings that have either the start or end date inside the date range</returns>
-        public async Task<IEnumerable<Booking>> GetAllBookingsInDateRange(DateRange dateRange)
+        /// <param name="roomId"> (Optional) The room id to restrict the search to</param>
+        /// <returns>A collection of all the bookings inside the gibing date range</returns>
+        private async Task<IEnumerable<Booking>> GetBookingsInDateRange(DateRange dateRange, Guid? roomId = null)
         {
-            string query = GetBookingsBetweenDatesQuery(dateRange);
+            string query = GetBookingsBetweenDatesQuery(dateRange, roomId);
 
             var iterator = _container.GetItemQueryIterator<Booking>(new QueryDefinition(query));
             List<Booking> results = new List<Booking>();
@@ -196,13 +207,13 @@ namespace BookingX.Infrastructure.Data
             return results;
         }
 
-
         /// <summary>
         /// Gets the SQL API query to search for bookings inside the date range
         /// </summary>
         /// <param name="dateRange">The date range that will be used to search for bookings</param>
+        /// <param name="roomId"> (Optional) The room id to restrict the search to</param>
         /// <returns>SQL API query.</returns>
-        private static string GetBookingsBetweenDatesQuery(DateRange dateRange)
+        private static string GetBookingsBetweenDatesQuery(DateRange dateRange, Guid? roomId = null)
         {
             string fromDate = dateRange.From.ToString(DateTimeToShortStringFormat);
             string toDate = dateRange.To.ToString(DateTimeToShortStringFormat);
@@ -210,10 +221,14 @@ namespace BookingX.Infrastructure.Data
             var query = new StringBuilder();
             query.Append("SELECT * FROM b ");
             query.Append("WHERE ");
-            query.Append($"(b.StartDate BETWEEN '{fromDate}' AND '{toDate}')");
-            query.Append($" OR (b.EndDate BETWEEN '{fromDate}' AND '{toDate}')");
+            query.Append($"((b.StartDate BETWEEN '{fromDate}' AND '{toDate}')");
+            query.Append($" OR (b.EndDate BETWEEN '{fromDate}' AND '{toDate}'))");
+
+            if (roomId != null)
+                query.Append($" AND b.RoomId = '{roomId}'");
 
             return query.ToString();
         }
+
     }
 }
