@@ -5,9 +5,9 @@ namespace BookingX.Api
 {
     // TODO: Add Unit tests (mandatory for handlers!)
     // TODO: Add documentation comments
-    // TODO: Get rid of CQRS, is not useful for this simple case.
     // TODO: Implement global exception handler.
     // TODO: Implement logging
+    // TODO: Add Validations. Use fluent validation pipeline with Mediatr
     public class Program
     {
         public static void Main(string[] args)

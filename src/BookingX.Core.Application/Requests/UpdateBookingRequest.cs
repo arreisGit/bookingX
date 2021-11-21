@@ -2,13 +2,13 @@ using System;
 using BookingX.Core.Application.Dtos;
 using MediatR;
 
-namespace BookingX.Core.Application.Commands
+namespace BookingX.Core.Application.Requests
 {
-    public class UpdateBookingCommand : IRequest<bool>
+    public class UpdateBookingRequest : IRequest<bool>
     {
         public BookingDto Booking { get; }
         
-        public UpdateBookingCommand(BookingDto booking)
+        public UpdateBookingRequest(BookingDto booking)
         {
             Booking = booking;
         }

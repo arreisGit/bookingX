@@ -1,8 +1,7 @@
 using System;
 using System.Threading.Tasks;
-using BookingX.Core.Application.Commands;
+using BookingX.Core.Application.Requests;
 using BookingX.Core.Application.Dtos;
-using BookingX.Core.Application.Queries;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -33,7 +32,8 @@ namespace BookingX.Api.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<BookingDto>> GetBooking(Guid id)
         {
-            var booking = await _mediator.Send(new GetBookingQuery(id));
+            var getRequest = new GetBookingRequest(id);
+            var booking = await _mediator.Send(getRequest);
             if (booking != null)
             {
                 return Ok(booking);
@@ -54,9 +54,9 @@ namespace BookingX.Api.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> CreateBooking(BookingDto bookingDto)
         {
-            var createBookingCommand = new CreateBookingCommand(bookingDto);
-            await _mediator.Send(createBookingCommand);
-            return CreatedAtAction(nameof(GetBooking), new { id = bookingDto.Id }, bookingDto);
+            var createRequest = new CreateBookingRequest(bookingDto);
+            var newBooking = await _mediator.Send(createRequest);
+            return CreatedAtAction(nameof(GetBooking), new { id = bookingDto.Id }, newBooking);
         }
 
         /// <summary>
@@ -72,8 +72,8 @@ namespace BookingX.Api.Controllers
         public async Task<IActionResult> Update(Guid id, BookingDto booking)
         {
             booking.Id = id.ToString();
-            var updateBookingCommand = new UpdateBookingCommand(booking);
-            var updated = await _mediator.Send(updateBookingCommand);
+            var updateRequest = new UpdateBookingRequest(booking);
+            var updated = await _mediator.Send(updateRequest);
             return updated ? Accepted() : NotFound();
         }
 
@@ -85,8 +85,8 @@ namespace BookingX.Api.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(Guid id)
         {
-            var deleteBookingCommand = new DeleteBookingCommand(id);
-            var deleted = await _mediator.Send(deleteBookingCommand);
+            var deleteRequest = new DeleteBookingRequest(id);
+            var deleted = await _mediator.Send(deleteRequest);
             return deleted ? Accepted() : NotFound();
         }
     }

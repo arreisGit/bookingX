@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using BookingX.Core.Application.Dtos;
 using MediatR;
 
-namespace BookingX.Core.Application.Queries
+namespace BookingX.Core.Application.Requests
 {
     /// <summary>
     /// GetRoomsAvailability class.
     /// </summary>
-    public class GetRoomsAvailabilityQuery : IRequest<IEnumerable<RoomAvailabilityDto>>
+    public class GetRoomsAvailabilityRequest : IRequest<IEnumerable<RoomAvailabilityDto>>
     {
         /// <summary>
         /// 
@@ -21,11 +21,11 @@ namespace BookingX.Core.Application.Queries
         public DateTime ToDate { get; private set; }
 
         /// <summary>
-        /// Initializes a new instance of <see cref="GetRoomsAvailabilityQuery"/> class.
+        /// Initializes a new instance of <see cref="GetRoomsAvailabilityRequest"/> class.
         /// </summary>
         /// <param name="fromDate">The beggining date of the scoped date range.</param>
         /// <param name="toDate">The end date of the scoped date range.</param>
-        public GetRoomsAvailabilityQuery(DateTime fromDate, DateTime toDate)
+        public GetRoomsAvailabilityRequest(DateTime fromDate, DateTime toDate)
         {
             FromDate = fromDate;
             ToDate = toDate;

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
 using BookingX.Core.Application.Dtos;
-using BookingX.Core.Application.Queries;
+using BookingX.Core.Application.Requests;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -31,7 +31,7 @@ namespace BookingX.Api.Controllers
         [HttpGet]
         public async Task<ActionResult<ICollection<RoomDto>>> GetAllRooms()
         {
-            var rooms = await _mediator.Send(new GetAllRoomsQuery());
+            var rooms = await _mediator.Send(new GetAllRoomsRequest());
             return Ok(rooms);
         }
 
@@ -45,7 +45,7 @@ namespace BookingX.Api.Controllers
         [HttpGet("availability")]
         public async Task<IActionResult> GetRoomsAvailability([Required] DateTime? fromDate, [Required] DateTime? toDate)
         {
-            var query = new GetRoomsAvailabilityQuery((DateTime)fromDate, (DateTime)toDate);
+            var query = new GetRoomsAvailabilityRequest((DateTime)fromDate, (DateTime)toDate);
             var roomsAvailability = await _mediator.Send(query);
             return Ok(roomsAvailability);
         }

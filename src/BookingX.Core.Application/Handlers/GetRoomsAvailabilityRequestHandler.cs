@@ -4,7 +4,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using BookingX.Core.Application.Dtos;
 using BookingX.Core.Application.Interfaces;
-using BookingX.Core.Application.Queries;
+using BookingX.Core.Application.Requests;
 using BookingX.Core.Domain.Interfaces;
 using BookingX.Core.Domain.ValueObjects;
 using MediatR;
@@ -15,7 +15,7 @@ namespace BookingX.Core.Application.Handlers
     /// <summary>
     /// GetRoomsAvailabilityQueryHandler class/
     /// </summary>
-    public class GetRoomsAvailabilityQueryHandler : IRequestHandler<GetRoomsAvailabilityQuery, IEnumerable<RoomAvailabilityDto>>
+    public class GetRoomsAvailabilityRequestHandler : IRequestHandler<GetRoomsAvailabilityRequest, IEnumerable<RoomAvailabilityDto>>
     {
         /// <summary>
         /// The room repository.
@@ -29,11 +29,11 @@ namespace BookingX.Core.Application.Handlers
 
 
         /// <summary>
-        /// Initializes a new instance of <see cref="GetRoomsAvailabilityQuery"/> class.
+        /// Initializes a new instance of <see cref="GetRoomsAvailabilityRequest"/> class.
         /// </summary>
         /// <param name="roomRepository">A room repository.</param>
         /// <param name="bookingRepository">A booking repository.</param>
-        public GetRoomsAvailabilityQueryHandler(
+        public GetRoomsAvailabilityRequestHandler(
             IRoomRepository roomRepository,
             IBookingRepository bookingRepository,
             IRoomsAvailabilitySolverStrategy roomsAvailabilitySolver)
@@ -44,7 +44,7 @@ namespace BookingX.Core.Application.Handlers
         }
 
         /// <inheritdoc/>
-        public async Task<IEnumerable<RoomAvailabilityDto>> Handle(GetRoomsAvailabilityQuery request, CancellationToken cancellationToken)
+        public async Task<IEnumerable<RoomAvailabilityDto>> Handle(GetRoomsAvailabilityRequest request, CancellationToken cancellationToken)
         {
             var rooms = await _roomRepository.GetAllRoomsAsync();
 

@@ -1,13 +1,13 @@
 using BookingX.Core.Application.Dtos;
 using MediatR;
 
-namespace BookingX.Core.Application.Commands
+namespace BookingX.Core.Application.Requests
 {
-    public class CreateBookingCommand : IRequest
+    public class CreateBookingRequest : IRequest<BookingDto>
     {
         public BookingDto BookingDto { get; private set; }
 
-        public CreateBookingCommand(BookingDto bookingDto)
+        public CreateBookingRequest(BookingDto bookingDto)
         {
             BookingDto = bookingDto;
         }

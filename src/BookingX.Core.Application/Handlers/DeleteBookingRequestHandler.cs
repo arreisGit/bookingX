@@ -1,20 +1,20 @@
 using System.Threading;
 using System.Threading.Tasks;
-using BookingX.Core.Application.Commands;
+using BookingX.Core.Application.Requests;
 using BookingX.Core.Domain.Interfaces;
 using MediatR;
 
 namespace BookingX.Core.Application.Handlers
 {
-    public class DeleteBookingCommandHandler : IRequestHandler<DeleteBookingCommand, bool>
+    public class DeleteBookingRequestHandler : IRequestHandler<DeleteBookingRequest, bool>
     {
         private readonly IBookingRepository _bookingRepository;
-        public DeleteBookingCommandHandler(IBookingRepository bookingRepository)
+        public DeleteBookingRequestHandler(IBookingRepository bookingRepository)
         {
             _bookingRepository = bookingRepository;
         }
 
-        public async Task<bool> Handle(DeleteBookingCommand request, CancellationToken cancellationToken)
+        public async Task<bool> Handle(DeleteBookingRequest request, CancellationToken cancellationToken)
         {
             return await _bookingRepository.DeleteAsync(request.Id);
         }

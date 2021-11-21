@@ -24,7 +24,7 @@ namespace BookingX.Api.Extensions
 
             services.AddCosmosDbClient(configuration);
             services.AddRepositories();
-            services.AddMediatR(typeof(GetAllRoomsQueryHandler).Assembly);
+            services.AddMediatR(typeof(GetAllRoomsRequestHandler).Assembly);
             services.AddSingleton<IRoomsAvailabilitySolverStrategy,RoomsCompleteDaysAvailabilitySolver>();
 
             //TODO: Validate automapper config
