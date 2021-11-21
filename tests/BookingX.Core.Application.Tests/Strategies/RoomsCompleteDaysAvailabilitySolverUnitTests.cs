@@ -36,6 +36,11 @@ namespace BookingX.Core.Application.Tests.Strategies
             var fakeRoom = new Room(Guid.NewGuid(), "test");
             var rooms = new Room[] { fakeRoom };
 
+            var expectedAvailableDateRange = new DateRange(
+                fromDate,
+                toDate.AddDays(1).AddMilliseconds(-1)
+            );
+
             var availabilitySolver = new RoomsCompleteDaysAvailabilitySolver();
 
             // Act
@@ -52,7 +57,7 @@ namespace BookingX.Core.Application.Tests.Strategies
             var fakeRoomAvailability = roomsAvailability.First();
             Assert.Equal(fakeRoom.Id, fakeRoomAvailability.RoomId);
             Assert.Single(fakeRoomAvailability.AvailableDateRanges);
-            Assert.Equal(dateRange, fakeRoomAvailability.AvailableDateRanges.First());
+            Assert.Equal(expectedAvailableDateRange, fakeRoomAvailability.AvailableDateRanges.First());
         }
 
         [Fact]
@@ -129,8 +134,14 @@ namespace BookingX.Core.Application.Tests.Strategies
             var fakeRoomAvailability = roomsAvailability.First();
             Assert.Single(fakeRoomAvailability.AvailableDateRanges);
             var fakeRoomAvailableDateRange = fakeRoomAvailability.AvailableDateRanges.First();
-            Assert.True((fakeRoomAvailableDateRange.From - fakeBookingEndDate).TotalDays == 1);
-            Assert.Equal(queryToDate.Date, fakeRoomAvailableDateRange.To.Date);
+            Assert.Equal(
+                fakeBookingEndDate.AddDays(1),
+                fakeRoomAvailableDateRange.From
+            );
+             Assert.Equal(
+                queryToDate.AddDays(1).AddMilliseconds(-1),
+                fakeRoomAvailableDateRange.To
+            );
         }
 
         [Fact]
@@ -153,12 +164,12 @@ namespace BookingX.Core.Application.Tests.Strategies
 
             var firstExpectedAvailableDateRange = new DateRange(
                 firstBookingEndDate.AddDays(1),
-                secondBookingStartDate.AddDays(-1)
+                secondBookingStartDate.AddMilliseconds(-1)
             );
 
             var secondExpectedAvailableDateRange = new DateRange(
                 secondBookingEndDate.AddDays(1),
-                thirdBookingStartDate.AddDays(-1)
+                thirdBookingStartDate.AddMilliseconds(-1)
             );
 
             var fakeBookings = new Booking[]{
