@@ -3,10 +3,10 @@
 
 This project represents a Booking API that allows the user to do the following:
 * Get a list of rooms.  
-* Get a list of availability date ranges by room. 
+* Get a list of roomas available between two dates
 * Book a room.  
-* See the details of a booking.  
-* Edit a booking  
+* Get the details of a booking.  
+* Update a booking  
 * Delete a booking. 
 
 ## Created With
@@ -34,3 +34,4 @@ To save some developing time on this project, some notable shortcuts where taken
 * NO custom Swashbuckle examples where created.
 * Not all the classes have XML comments documentation.
 * An stubbed Repostitory for the rooms is being used.
+* NO BaseRepository implementation.
