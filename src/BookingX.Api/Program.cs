@@ -3,11 +3,10 @@ using Microsoft.Extensions.Hosting;
 
 namespace BookingX.Api
 {
-    // TODO: Add UseCases unit tests
+    // TODO: Add Unit tests (mandatory for handlers!)
     // TODO: Add documentation comments
     // TODO: Get rid of CQRS, is not useful for this simple case.
     // TODO: Implement global exception handler.
-    // TODO: App insights for logging and telemetry.
     // TODO: Implement logging
     public class Program
     {
@@ -15,7 +14,6 @@ namespace BookingX.Api
         {
             CreateHostBuilder(args).Build().Run();
         }
-
        
         public static IHostBuilder CreateHostBuilder(string[] args) =>
             Host.CreateDefaultBuilder(args)

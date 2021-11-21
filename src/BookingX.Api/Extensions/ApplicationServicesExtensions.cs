@@ -67,7 +67,7 @@ namespace BookingX.Api.Extensions
             services.AddSingleton<IBookingRepository>( 
                 sp =>  {
                      return BookingRepository
-                            .Create(
+                            .Instantiate(
                                 sp.GetRequiredService<CosmosClient>(),
                                 sp.GetRequiredService<IOptions<BookingContainerSettings>>()
                             )

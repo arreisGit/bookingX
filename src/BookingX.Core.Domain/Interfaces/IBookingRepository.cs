@@ -1,5 +1,7 @@
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
+using BookingX.Core.Domain.ValueObjects;
 
 namespace BookingX.Core.Domain.Interfaces
 {
@@ -9,6 +11,6 @@ namespace BookingX.Core.Domain.Interfaces
         Task<Booking> GetByIdAsync(Guid id);
         Task<bool> UpdateAsync(Booking booking);
         Task<bool> DeleteAsync(Guid id);
-
+        Task<IEnumerable<Booking>> GetAllBookingsInDateRange(DateRange dateRange);
     }
 }
