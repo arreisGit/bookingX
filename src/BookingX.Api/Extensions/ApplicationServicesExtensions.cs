@@ -1,5 +1,5 @@
 using BookingX.Api.Settings;
-using BookingX.Core.Application.MappingProfiles;
+using BookingX.Core.Application.Automapper;
 using BookingX.Core.Application.Handlers;
 using BookingX.Core.Application.Interfaces;
 using BookingX.Core.Application.Strategies;

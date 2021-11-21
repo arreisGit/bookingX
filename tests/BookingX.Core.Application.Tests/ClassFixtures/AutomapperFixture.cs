@@ -1,6 +1,6 @@
 ﻿using System;
 using AutoMapper;
-using BookingX.Core.Application.Common;
+using BookingX.Core.Application.Automapper;
 
 namespace BookingX.Core.Application.Tests.ClassFixtures
 {
