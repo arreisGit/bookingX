@@ -129,6 +129,24 @@
 					"request": {
 						"method": "GET",
 						"header": [],
+						"url": {
+							"raw": "{{host}}/api/rooms",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"rooms"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Availability",
+					"request": {
+						"method": "GET",
+						"header": [],
 						"url": null
 					},
 					"response": []
