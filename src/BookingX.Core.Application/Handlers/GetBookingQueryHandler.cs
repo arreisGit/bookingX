@@ -4,8 +4,8 @@ using System.Threading.Tasks;
 using AutoMapper;
 using BookingX.Core.Application.Dtos;
 using BookingX.Core.Application.Queries;
-using BookingX.Core.Domain;
 using BookingX.Core.Domain.Interfaces;
+using BookingX.Core.Domain;
 using MediatR;
 
 namespace BookingX.Core.Application.Handlers

@@ -16,7 +16,7 @@ namespace BookingX.Infrastructure.Data.Stubs
             _fakeRooms = new List<Room>();
             _fakeRooms.Add(new Room(Guid.Parse("2c3bd9ef-4747-462e-8ad4-39f4af475a9a"), "101"));
         } 
-        public Task<ICollection<Room>> GetAllRooms()
+        public Task<ICollection<Room>> GetAllRoomsAsync()
         {
             return Task.FromResult((ICollection<Room>)_fakeRooms);
         }

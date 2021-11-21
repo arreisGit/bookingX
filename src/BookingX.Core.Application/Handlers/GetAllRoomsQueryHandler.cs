@@ -25,7 +25,7 @@ namespace BookingX.Core.Application.Handlers
         public async Task<ICollection<RoomDto>> Handle(
             GetAllRoomsQuery request, CancellationToken cancellationToken)
         {
-            var rooms = await _roomsRepository.GetAllRooms().ConfigureAwait(false);
+            var rooms = await _roomsRepository.GetAllRoomsAsync().ConfigureAwait(false);
             var roomsDtos = _mapper.Map<ICollection<Domain.Room>, ICollection<Dtos.RoomDto>>(rooms);
             return roomsDtos;
         }

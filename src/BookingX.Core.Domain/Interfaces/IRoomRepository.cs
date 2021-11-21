@@ -6,6 +6,6 @@ namespace BookingX.Core.Domain.Interfaces
 {
     public interface IRoomRepository
     {
-        Task<ICollection<Room>> GetAllRooms();
+        Task<ICollection<Room>> GetAllRoomsAsync();
     }
 }

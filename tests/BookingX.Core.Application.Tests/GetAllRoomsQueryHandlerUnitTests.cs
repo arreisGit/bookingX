@@ -6,15 +6,24 @@ using BookingX.Core.Domain;
 using BookingX.Core.Domain.Interfaces;
 using BookingX.Core.Application.Handlers;
 using BookingX.Core.Application.Queries;
+using BookingX.Core.Application.Tests.ClassFixtures;
 using Xunit;
 using NSubstitute;
+using AutoMapper;
 
 namespace BookingX.Core.Application.Tests
 {
-    public class GetAllRoomsQueryHandlerUnitTests
+    public class GetAllRoomsQueryHandlerUnitTests : IClassFixture<AutoMapperFixture>
     {
+        private readonly IMapper _mapper;
+
+        public GetAllRoomsQueryHandlerUnitTests(AutoMapperFixture automapperFixture)
+        {
+            _mapper = automapperFixture.Mapper;
+        }
+
         [Fact]
-        public async Task Given_Good_GetAllQuery_Return_All_Rooms()
+        public async Task Handle_Returns_All_Rooms()
         {
             // Arrange
             var stubbedRooms = new List<Room>();
@@ -24,11 +33,11 @@ namespace BookingX.Core.Application.Tests
 
             var roomsRepositoryStub = Substitute.For<IRoomRepository>();
             roomsRepositoryStub
-                .GetAllRooms()
+                .GetAllRoomsAsync()
                 .ReturnsForAnyArgs(Task.FromResult((ICollection<Room>)stubbedRooms));
 
             var query = new GetAllRoomsQuery();
-            var handler = new GetAllRoomsQueryHandler(roomsRepositoryStub);
+            var handler = new GetAllRoomsQueryHandler(_mapper, roomsRepositoryStub);
 
             // Act
             var returnedRooms = await handler
