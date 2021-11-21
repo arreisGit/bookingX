@@ -126,8 +126,8 @@ namespace BookingX.Infrastructure.Data
                                         booking.RoomId);
 
             if (roomOverlappingBookings.Any())
-                throw new ValidationException(
-                    "There room is not available to be booked in the specified dates");
+                throw new InvalidOperationException(
+                    "The room is not available to be booked in the specified dates");
 
             ItemResponse<Booking> response = await _container.CreateItemAsync<Booking>(
                                                                 booking,

@@ -92,12 +92,10 @@ namespace BookingX.Api.Middleware
             {
                 ErrorMessage = exception.Message,
                 InnerException = _includeExceptionStackInResponse ?
-                                $"{exception.Message} {exception.StackTrace}"
+                                $"{exception.GetType().FullName}: {exception.Message} {exception.StackTrace}"
                                 : null
             };
             await context.Response.WriteAsync(JsonConvert.SerializeObject(errorResponse));
-
-            context.Response.Headers.Clear();
         }
     }
 }

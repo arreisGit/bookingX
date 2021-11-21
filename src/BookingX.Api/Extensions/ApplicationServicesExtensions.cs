@@ -1,4 +1,5 @@
-using BookingX.Core.Application.Common;
+using BookingX.Api.Settings;
+using BookingX.Core.Application.MappingProfiles;
 using BookingX.Core.Application.Handlers;
 using BookingX.Core.Application.Interfaces;
 using BookingX.Core.Application.Strategies;
@@ -20,14 +21,24 @@ namespace BookingX.Api.Extensions
             this IServiceCollection services,
             IConfiguration configuration)
         {
-
+            services.AddApplicationSettings(configuration);
             services.AddCosmosDbClient(configuration);
             services.AddRepositories();
             services.AddMediatR(typeof(GetAllRoomsRequestHandler).Assembly);
-            services.AddSingleton<IRoomsAvailabilitySolverStrategy,RoomsCompleteDaysAvailabilitySolver>();
+            services.AddSingleton<IRoomsAvailabilitySolverStrategy, RoomsCompleteDaysAvailabilitySolver>();
 
             //TODO: Validate automapper config
             services.AddAutoMapper(typeof(MappingProfiles).Assembly);
+
+            return services;
+        }
+
+        private static IServiceCollection AddApplicationSettings(
+            this IServiceCollection services,
+            IConfiguration configuration)
+        {
+            var applicationSettings = configuration.GetSection(ApplicationSettings.Section);
+            services.Configure<ApplicationSettings>(applicationSettings);
 
             return services;
         }
@@ -52,7 +63,7 @@ namespace BookingX.Api.Extensions
                     connectionSettings.Endpoint,
                     connectionSettings.AuthenticationKey);
             });
-            
+
             return services;
         }
 
@@ -63,15 +74,16 @@ namespace BookingX.Api.Extensions
             // Using a Rooms stub to save time with the demostration project.
             services.AddSingleton<IRoomRepository, RoomRepositoryStub>();
 
-            services.AddSingleton<IBookingRepository>( 
-                sp =>  {
-                     return BookingRepository
-                            .Instantiate(
-                                sp.GetRequiredService<CosmosClient>(),
-                                sp.GetRequiredService<IOptions<BookingContainerSettings>>()
-                            )
-                            .GetAwaiter()
-                            .GetResult();
+            services.AddSingleton<IBookingRepository>(
+                sp =>
+                {
+                    return BookingRepository
+                           .Instantiate(
+                               sp.GetRequiredService<CosmosClient>(),
+                               sp.GetRequiredService<IOptions<BookingContainerSettings>>()
+                           )
+                           .GetAwaiter()
+                           .GetResult();
                 });
             return services;
         }
