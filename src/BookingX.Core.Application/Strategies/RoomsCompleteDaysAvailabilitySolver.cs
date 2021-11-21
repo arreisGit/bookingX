@@ -36,7 +36,7 @@ namespace BookingX.Core.Application.Strategies
 
                 IEnumerable<DateRange> availableRoomDateRanges = roomBookings.Any() ?
                                             AvailableDateRangesInScope(dateRange, roomBookings)
-                                        : new DateRange[] { dateRange };
+                                        : new DateRange[] { new DateRange (dateRange.From, dateRange.To.AddDays(1).AddMilliseconds(-1))};
 
                 roomsAvailability.Add(new RoomAvailabilityDto(room.Id, availableRoomDateRanges));
 
@@ -77,7 +77,7 @@ namespace BookingX.Core.Application.Strategies
                     availableDateRanges.Add(
                         new DateRange(
                             currentDate,
-                            booking.StartDate.Date.AddDays(-1)
+                            booking.StartDate.Date.AddMilliseconds(-1)
                         )
                     );
 
@@ -94,7 +94,7 @@ namespace BookingX.Core.Application.Strategies
                 availableDateRanges.Add(
                     new DateRange(
                         currentDate,
-                        dateRange.To.Date 
+                        dateRange.To.Date.AddDays(1).AddMilliseconds(-1) 
                     )
                 );
 
