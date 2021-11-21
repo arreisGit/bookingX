@@ -10,9 +10,8 @@ using Microsoft.AspNetCore.Mvc;
 namespace BookingX.Api.Controllers
 {
     /// <summary>
-    /// Roonms controller.
+    /// Rooms controller.
     /// </summary>
-    /// <seealso cref="Microsoft.AspNetCore.Mvc.ControllerBase" />
     public class RoomsController : BaseApiController
     {
 

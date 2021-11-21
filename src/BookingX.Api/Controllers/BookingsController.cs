@@ -12,7 +12,6 @@ namespace BookingX.Api.Controllers
     /// <summary>
     /// Booking controller.
     /// </summary>
-    /// <seealso cref="Microsoft.AspNetCore.Mvc.ControllerBase" />
     public class BookingsController : BaseApiController
     {
         /// <summary>
