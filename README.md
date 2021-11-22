@@ -38,3 +38,10 @@ To save some developing time on this project, some notable shortcuts where taken
 * NO BaseRepository implementation.
 * NO usage of CorrelationId that in real-life situations help with traceability.
 * Domain Booking Entity has two NewtonSoft attributes to map Id and ETag to the corresponding CosmosDB properties. I'm aware that this is violating the Clean Architecture layer encapsulation, as the Domain should not know nor care about the Infrastructure Data mechanisms. Some of the possible solutions are to set up the EF Cosmos provider and configure all the necessary mappings there, implement a Booking Data DTO to use it for CosmosDb communication and map it over to the Domain Object, or use a custom deserializer in cosmos client.
+
+## Usage
+Running the application is quite simple, you just to have installed .NET 5 SDK and an access to any CosmosDb server, including CosmosDb local emulator ([Install and use the Azure Cosmos DB Emulator for local development and testing](https://docs.microsoft.com/en-us/azure/cosmos-db/local-emulator?tabs=ssl-netstd21)).
+
+It is not recommended to set up secrets in the appsettings.json file, but for the sake of a simple test you can add your CosmosDb settings directly in it, or if you prefer you can set them up as User Secrets ([Safe storage of app secrets in development in ASP.NET Core](https://docs.microsoft.com/en-us/aspnet/core/security/app-secrets?view=aspnetcore-6.0&tabs=windows)).
+
+Once you have the CosmosDb connection setup, you can launch the BookingX.Api by with Visual Studio, Visual Studio Code, or the dotnet CLI.

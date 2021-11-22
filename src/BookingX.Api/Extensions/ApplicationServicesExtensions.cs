@@ -31,7 +31,6 @@ namespace BookingX.Api.Extensions
             services.AddSingleton<IRoomsAvailabilitySolverStrategy, RoomsCompleteDaysAvailabilitySolver>();
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
             services.AddValidatorsFromAssemblyContaining<BookingDtoValidator>();
-            //TODO: Validate automapper config
             services.AddAutoMapper(typeof(MappingProfiles).Assembly);
 
             return services;
