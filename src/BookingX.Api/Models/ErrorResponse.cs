@@ -1,18 +1,17 @@
 using System;
-
+using System.Collections.Generic;
 
 namespace BookingX.Api.Models
 {
-
     /// <summary>
     /// ExceptionResponse
     /// </summary>
     public class ErrorResponse
     {
         /// <summary>
-        /// Error Message
+        /// Errors
         /// </summary>
-        public string ErrorMessage { get; set; }
+        public IEnumerable<string> Errors { get; set; }
 
         /// <summary>
         /// Inner Exception StackTrace

@@ -25,11 +25,7 @@ namespace BookingX.Api
         {
 
             services
-            .AddControllers()
-            .AddFluentValidation( config =>
-            {
-                config.RegisterValidatorsFromAssemblyContaining<BookingDtoValidator>();
-            });
+            .AddControllers();
 
             services.AddSwaggerGen(c =>
             {

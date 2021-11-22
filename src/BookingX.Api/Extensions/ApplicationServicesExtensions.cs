@@ -1,12 +1,15 @@
 using BookingX.Api.Settings;
 using BookingX.Core.Application.Automapper;
+using BookingX.Core.Application.FluentValidation;
 using BookingX.Core.Application.Handlers;
 using BookingX.Core.Application.Interfaces;
+using BookingX.Core.Application.MediatRBehaviors;
 using BookingX.Core.Application.Strategies;
 using BookingX.Core.Domain.Interfaces;
 using BookingX.Infrastructure.Data;
 using BookingX.Infrastructure.Data.Settings;
 using BookingX.Infrastructure.Data.Stubs;
+using FluentValidation;
 using MediatR;
 using Microsoft.Azure.Cosmos;
 using Microsoft.Extensions.Configuration;
@@ -26,7 +29,8 @@ namespace BookingX.Api.Extensions
             services.AddRepositories();
             services.AddMediatR(typeof(GetAllRoomsRequestHandler).Assembly);
             services.AddSingleton<IRoomsAvailabilitySolverStrategy, RoomsCompleteDaysAvailabilitySolver>();
-
+            services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
+            services.AddValidatorsFromAssemblyContaining<BookingDtoValidator>();
             //TODO: Validate automapper config
             services.AddAutoMapper(typeof(MappingProfiles).Assembly);
 

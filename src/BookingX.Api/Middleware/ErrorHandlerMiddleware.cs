@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace BookingX.Api.Middleware
 {
@@ -63,38 +65,70 @@ namespace BookingX.Api.Middleware
                 if (_requestDelegate != null)
                     await _requestDelegate(context).ConfigureAwait(false);
             }
-            catch (ValidationException validationException)
+            catch (FluentValidation.ValidationException ex)
             {
-                await WriteResponse(context, validationException, StatusCodes.Status400BadRequest)
+                IEnumerable<string> errorMessages = ex
+                                            .Errors
+                                            .Select(err => $"{err.PropertyName}: {err.ErrorMessage}");
+
+                var errorResponse = new ErrorResponse
+                {
+                    Errors = errorMessages,
+                    InnerException = _includeExceptionStackInResponse ?
+                                $"{ex.GetType().FullName}: {ex.Message} {ex.StackTrace}"
+                                : null
+                };
+
+                await WriteResponse(context, errorResponse, StatusCodes.Status400BadRequest)
+                .ConfigureAwait(false);
+            }
+            catch (BookingValidationException ex)
+            {
+                var errorResponse = ExceptionToErrorResponse(ex);
+                await WriteResponse(context, errorResponse, StatusCodes.Status400BadRequest)
                    .ConfigureAwait(false);
             }
-            catch (Exception exception)
+            catch (Exception ex)
             {
-                _logger.LogCritical(exception, "Exception captured in error handling middleware");
-                await WriteResponse(context, exception, StatusCodes.Status500InternalServerError)
-                     .ConfigureAwait(false);
+                var errorResponse = ExceptionToErrorResponse(ex);
+                _logger.LogCritical(ex, "Exception captured in error handling middleware");
+
+                await WriteResponse(
+                    context,
+                    errorResponse,
+                    StatusCodes.Status500InternalServerError)
+                .ConfigureAwait(false);
             }
+        }
+
+        /// <summary>
+        /// Converts an Exception into an ErrorResponse object
+        /// </summary>
+        /// <param name="exception">The Exception to be converted</param>
+        /// <returns>An ErrorResponse</returns>
+        private ErrorResponse ExceptionToErrorResponse(Exception exception)
+        {
+            return new ErrorResponse
+            {
+                Errors = new string[] { exception.Message },
+                InnerException = _includeExceptionStackInResponse ?
+                              $"{exception.GetType().FullName}: {exception.Message} {exception.StackTrace}"
+                              : null
+            };
         }
 
         /// <summary>
         /// Writes the response to the current context.
         /// </summary>
         /// <param name="context">Context of the invocation</param>
-        /// <param name="exception">The exception that got raised</param>
+        /// <param name="errorResponse">The exception that got raised</param>
         /// <param name="httpStatusCode">The HttpStatusCode that will be written used for the response</param>
         /// <returns>Task of invocation</returns>
-        private async Task WriteResponse(HttpContext context, Exception exception, int httpStatusCode)
+        private async Task WriteResponse(HttpContext context, ErrorResponse errorResponse, int httpStatusCode)
         {
             context.Response.StatusCode = httpStatusCode;
             context.Response.ContentType = JsonContentType;
 
-            var errorResponse = new ErrorResponse
-            {
-                ErrorMessage = exception.Message,
-                InnerException = _includeExceptionStackInResponse ?
-                                $"{exception.GetType().FullName}: {exception.Message} {exception.StackTrace}"
-                                : null
-            };
             await context.Response.WriteAsync(JsonConvert.SerializeObject(errorResponse));
         }
     }
