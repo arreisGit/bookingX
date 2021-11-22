@@ -23,12 +23,9 @@ namespace BookingX.Core.Application.Handlers
             _bookingRepository = bookingRepository ?? throw new ArgumentNullException(nameof(bookingRepository));
         }
 
-        // TODO: EndDate cannot be more than 3 days of difference than StartDate
-        // TODO: StartDate cannot be more than 30 days in advance
-        // TODO: StartDate must needs to start, at least next day after booking (creation)
         public async Task<BookingDto> Handle(CreateBookingRequest request, CancellationToken cancellationToken)
         {
-            var booking = _mapper.Map<Booking>(request.BookingDto);
+            var booking = _mapper.Map<Booking>(request.Booking);
             var insertedBooking = await _bookingRepository.CreateAsync(booking);
             var insertedBookingDto = _mapper.Map<BookingDto>(insertedBooking);
             return insertedBookingDto;
