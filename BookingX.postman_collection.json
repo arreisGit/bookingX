@@ -26,7 +26,7 @@
 							"variable": [
 								{
 									"key": "id",
-									"value": "5d59537b-f9d8-4bc0-a8a7-e50b199213ce"
+									"value": "b102d6e5-d1c0-448f-823b-e9e0410fe204"
 								}
 							]
 						}
@@ -40,7 +40,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"id\": \"5d59537b-f9d8-4bc0-a8a7-e50b199213ce\",\r\n  \"customerId\": \"980fbb8f-2311-45b9-9ded-e6371908453a\",\r\n  \"roomId\": \"8f414952-b2d8-4193-b956-56b33698c7f2\",\r\n  \"startDate\": \"2021-11-20\",\r\n  \"endDate\": \"2021-11-20\"\r\n}",
+							"raw": "{\r\n  \"id\": \"b102d6e5-d1c0-448f-823b-e9e0410fe204\",\r\n  \"customerId\": \"980fbb8f-2311-45b9-9ded-e6371908453a\",\r\n  \"roomId\": \"8f414952-b2d8-4193-b956-56b33698c7f2\",\r\n  \"startDate\": \"2021-11-01T00:00:00.000\",\r\n  \"endDate\": \"2021-11-10T23:59:59.999\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -67,7 +67,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"id\": \"5d59537b-f9d8-4bc0-a8a7-e50b199213ce\",\r\n    \"customerId\": \"980fbb8f-2311-45b9-9ded-e6371908453a\",\r\n    \"roomId\": \"8f414952-b2d8-4193-b956-56b33698c7f2\",\r\n   \"startDate\": \"2021-11-22\",\r\n    \"endDate\": \"2021-11-25\",\r\n    \"etag\": \"\\\"00000000-0000-0000-ddd1-1764366001d7\\\"\"\r\n}",
+							"raw": "{\r\n    \"id\": \"b102d6e5-d1c0-448f-823b-e9e0410fe204\",\r\n    \"customerId\": \"980fbb8f-2311-45b9-9ded-e6371908453a\",\r\n    \"roomId\": \"8f414952-b2d8-4193-b956-56b33698c7f2\",\r\n    \"startDate\": \"2021-11-01T00:00:00\",\r\n    \"endDate\": \"2021-11-10T23:59:59\",\r\n    \"etag\": \"\\\"00000000-0000-0000-df24-a6c2f33001d7\\\"\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -147,7 +147,27 @@
 					"request": {
 						"method": "GET",
 						"header": [],
-						"url": null
+						"url": {
+							"raw": "{{host}}/api/rooms/availability?fromDate=2021-11-05&toDate=2021-11-05",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"rooms",
+								"availability"
+							],
+							"query": [
+								{
+									"key": "fromDate",
+									"value": "2021-11-05"
+								},
+								{
+									"key": "toDate",
+									"value": "2021-11-05"
+								}
+							]
+						}
 					},
 					"response": []
 				}
