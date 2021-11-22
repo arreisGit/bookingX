@@ -3,8 +3,6 @@ using Microsoft.Extensions.Hosting;
 
 namespace BookingX.Api
 {
-    // TODO: Add Validations. Use fluent validation pipeline with Mediatr
-    // TODO: Implement logging
     public class Program
     {
         public static void Main(string[] args)
