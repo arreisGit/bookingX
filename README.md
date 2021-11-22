@@ -24,9 +24,9 @@ To be able to comply the 99.99% uptime SLI, the following decisions were made.
 * Azure traffic Manager for load balancing.
  
 ## Time Saving Shortcuts
-To save some developing time on this project, some notable shortcuts where taken, which would have to be handled for real life scenarios.
+To save some developing time on this project, some notable shortcuts where taken which would have to be handled for real life scenarios.
 
-* For the booking creation, two calls are being made to Cosmosdb, the first one checks if there any overlapping bookings for the room, and the second creates it. In real life-scenarios, an stored procedured would have been used instead.
+* For the booking creation, two calls are being made to Cosmosdb, the first one checks if there any overlapping bookings for the room and the second creates it. In real life-scenarios, an stored procedured would have been used instead.
 * The booking id was used for the CosmsosDb partition Key. On a real life case, the partition key needs to be carefully chosen.
 * NO distributed lock for Booking Creation. Due the nature of this service and its backend store, some concurrency control mechanism would have to be implemented.
 * NO user authentication nor authorization.
@@ -36,3 +36,5 @@ To save some developing time on this project, some notable shortcuts where taken
 * Not all the classes have XML comments documentation.
 * An stubbed Repostitory for the rooms is being used.
 * NO BaseRepository implementation.
+* NO usage of CorrelationId that in real-life situations help with traceability.
+* Domain Booking Entity has two NewtonSoft attributes to map Id and ETag to the corresponding CosmosDB properties. I'm aware that this is violating the Clean Architecture layer encapsulation, as the Domain should not know nor care about the Infrastructure Data mechanisms. Some of the possible solutions are to set up the EF Cosmos provider and configure all the necessary mappings there, implement a Booking Data DTO to use it for CosmosDb communication and map it over to the Domain Object, or use a custom deserializer in cosmos client.

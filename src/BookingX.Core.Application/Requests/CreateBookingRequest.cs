@@ -5,11 +5,11 @@ namespace BookingX.Core.Application.Requests
 {
     public class CreateBookingRequest : IRequest<BookingDto>
     {
-        public BookingDto BookingDto { get; private set; }
+        public BookingDto Booking { get; private set; }
 
-        public CreateBookingRequest(BookingDto bookingDto)
+        public CreateBookingRequest(BookingDto booking)
         {
-            BookingDto = bookingDto;
+            Booking = booking;
         }
     }
 }
