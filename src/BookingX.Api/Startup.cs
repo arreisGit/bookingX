@@ -1,5 +1,7 @@
 using BookingX.Api.Extensions;
 using BookingX.Api.Middleware;
+using BookingX.Core.Application.FluentValidation;
+using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -22,7 +24,13 @@ namespace BookingX.Api
         public void ConfigureServices(IServiceCollection services)
         {
 
-            services.AddControllers();
+            services
+            .AddControllers()
+            .AddFluentValidation( config =>
+            {
+                config.RegisterValidatorsFromAssemblyContaining<BookingDtoValidator>();
+            });
+
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "BookingX.Api", Version = "v1" });
