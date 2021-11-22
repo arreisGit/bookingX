@@ -45,3 +45,17 @@ Running the application is quite simple, you just to have installed .NET 5 SDK a
 It is not recommended to set up secrets in the appsettings.json file, but for the sake of a simple test you can add your CosmosDb settings directly in it, or if you prefer you can set them up as User Secrets ([Safe storage of app secrets in development in ASP.NET Core](https://docs.microsoft.com/en-us/aspnet/core/security/app-secrets?view=aspnetcore-6.0&tabs=windows)).
 
 Once you have the CosmosDb connection setup, you can launch the BookingX.Api by with Visual Studio, Visual Studio Code, or the dotnet CLI.
+
+
+A 'BookingX.postman_collection.json' Postman collection file has been included for convinience in the root folder, you can import it or open [https:localhost:5001/swagger](https:localhost:5001/swagger) to easily test the available endpoints, which are:
+
+
+**Bookings**
+ -  GET /bookings/{id} | Gets the detail for the specified Booking.
+ -  POST /bookings     | Creates a new Booking.
+ -  PUT /bookings/{id} | Updates a Booking.
+ -  DELETE /bookings/{id} | Gets the detail for the specified Booking.
+
+**Rooms**
+ - GET /rooms | Gets a list of all the existen rooms.
+ - GET /rooms/availability?fromDate={fromDate}&toDate={toDate} | Gets a list of all the available rooms between a date range.
